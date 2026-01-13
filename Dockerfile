@@ -1,14 +1,18 @@
-# Use OpenJDK 17
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk-jammy
 
-# Set working directory
 WORKDIR /app
 
-# Copy project files
-COPY . .
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
 
-# Build the app
+RUN chmod +x mvnw
+RUN ./mvnw dependency:go-offline
+
+COPY src ./src
+
 RUN ./mvnw clean package -DskipTests
 
-# Set the entrypoint
-ENTRYPOINT ["java","-jar","target/AgrowMartBackend-0.0.1-SNAPSHOT.jar"]
+EXPOSE 8080
+
+CMD ["sh", "-c", "java -jar target/*.jar"]
