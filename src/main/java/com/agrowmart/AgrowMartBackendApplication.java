@@ -2,14 +2,19 @@ package com.agrowmart;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-@EnableScheduling  // For cron jobs
+@EnableScheduling   // For cron jobs
+@EntityScan(basePackages = "com.agrowmart.entity")
+@EnableJpaRepositories(basePackages = "com.agrowmart.repository")
 public class AgrowMartBackendApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(AgrowMartBackendApplication.class, args);
         System.out.println("AgrowMart backend started");
@@ -24,7 +29,8 @@ public class AgrowMartBackendApplication {
                         .allowedOrigins(
                                 "http://192.168.43.136:5174",
                                 "http://localhost:5173",
-                                "http://localhost:3000")
+                                "http://localhost:3000"
+                        )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
